@@ -28,10 +28,6 @@ pub fn random_number() -> u32 {
     rng.gen()
 }
 
-fn main() {
-    println!("{}", random_number());
-}
-
 // tests
 #[cfg(test)]
 mod tests {
