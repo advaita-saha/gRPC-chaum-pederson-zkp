@@ -1,10 +1,10 @@
 use rand::Rng;
 
-fn exponentiate(num: u32, exp: u32, p: u32) -> u32 {
+pub fn exponentiate(num: u32, exp: u32, p: u32) -> u32 {
     num.pow(exp) % p
 }
 
-fn solve(x: u32, k: u32, c: u32, q: u32) -> u32 {
+pub fn solve(x: u32, k: u32, c: u32, q: u32) -> u32 {
     // s = (k - c * x) mod q
     let s = (k as i32 - (c * x) as i32) % q as i32;
     if s >= 0 {
@@ -14,7 +14,7 @@ fn solve(x: u32, k: u32, c: u32, q: u32) -> u32 {
     }
 }
 
-fn verify(p: u32, y1: u32, y2: u32, r1: u32, r2: u32, g: u32, h: u32, c: u32, s: u32) -> bool {
+pub fn verify(p: u32, y1: u32, y2: u32, r1: u32, r2: u32, g: u32, h: u32, c: u32, s: u32) -> bool {
     // R1 = g ^ s * Y1 ^ c
     let eq1 = r1 == (exponentiate(g, s, p) % p * exponentiate(y1, c, p) % p) % p;
     // R2 = h ^ s * Y2 ^ c
@@ -23,7 +23,7 @@ fn verify(p: u32, y1: u32, y2: u32, r1: u32, r2: u32, g: u32, h: u32, c: u32, s:
     eq1 && eq2
 }
 
-fn random_number() -> u32 {
+pub fn random_number() -> u32 {
     let mut rng = rand::thread_rng();
     rng.gen()
 }
