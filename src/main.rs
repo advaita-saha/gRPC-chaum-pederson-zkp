@@ -64,4 +64,27 @@ mod tests {
         assert!(!verify(23, 2, 3, 8, 4, 4, 9, 4, 8));
         assert!(!verify(23, 2, 3, 8, 4, 4, 9, 4, 2));
     }
+
+    #[test]
+    fn test_toy_example() {
+        let g = 4;
+        let h = 9;
+        let p = 23;
+        let q = 11;
+
+        let x = 6; // secret
+
+        let y1 = exponentiate(g, x, p);
+        let y2 = exponentiate(h, x, p);
+
+        let k = random_number() % q; // limiting to 0-99 for test case simplicity
+
+        let r1 = exponentiate(g, k, p);
+        let r2 = exponentiate(h, k, p);
+
+        let c = random_number() % q;
+        let s = solve(x, k, c, q);
+
+        assert!(verify(p, y1, y2, r1, r2, g, h, c, s));
+    }
 }
