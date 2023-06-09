@@ -1,0 +1,37 @@
+syntax = "proto3"
+package zkp_auth;
+
+message RegisterRequest {
+    string user = 1;
+    int32 y1 = 2;
+    int32 y2 = 3;
+}
+
+message RegisterResponse {
+}
+
+message AuthenticationChallengeRequest {
+    string user = 1;
+    int32 r1 = 2;
+    int32 r2 = 3;
+}
+
+message AuthenticationChallengeResponse {
+    string auth_id = 1;
+    int32 c = 2;
+}
+
+message AuthenticationAnswerRequest {
+    string auth_id = 1;
+    int32 s = 2;
+}
+
+message AuthenticationAnswerResponse {
+    string session_id = 1;
+}
+
+service Auth {
+    rpc Register(RegisterRequest) returns (RegisterResponse);
+    rpc AuthenticationChallenge(AuthenticationChallengeRequest) returns (AuthenticationChallengeResponse);
+    rpc VerifyAuthentication(AuthenticationAnswerRequest) returns (AuthenticationAnswerResponse);
+}
