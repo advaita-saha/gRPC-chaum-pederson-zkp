@@ -33,7 +33,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .trim()
         .parse::<BigUint>()
         .expect("Expected a valid number");
-    println!("x = {:?}", x);
+
     let y1 = exponentiate(&deserialize(G), &x, &deserialize(P));
     let y2 = exponentiate(&deserialize(H), &x, &deserialize(P));
 
