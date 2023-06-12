@@ -16,9 +16,9 @@ num-traits = "0.2.15"
 [build-dependencies]
 tonic-build = "0.9"
 
-# [[bin]]
-# name = "server"
-# path = "src/server.rs"
+[[bin]]
+name = "server"
+path = "src/server.rs"
 
 # [[bin]]
 # name = "client"

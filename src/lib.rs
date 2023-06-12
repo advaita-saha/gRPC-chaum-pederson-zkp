@@ -2,10 +2,10 @@ use num_bigint::{BigUint, RandBigInt};
 use num_traits::One;
 use rand::Rng;
 
-pub const G: u32 = 4u32;
-pub const H: u32 = 9u32;
-pub const P: u32 = 23u32;
-pub const Q: u32 = 11u32;
+pub const G: &[u8] = &[0x04];
+pub const H: &[u8] = &[0x09];
+pub const P: &[u8] = &[0x17];
+pub const Q: &[u8] = &[0x0b];
 
 pub fn exponentiate(num: &BigUint, exp: &BigUint, p: &BigUint) -> BigUint {
     num.modpow(exp, p)
@@ -56,6 +56,14 @@ pub fn random_string(n: usize) -> String {
         .take(n)
         .map(char::from)
         .collect()
+}
+
+pub fn serialize(n: &BigUint) -> Vec<u8> {
+    n.to_bytes_be()
+}
+
+pub fn deserialize(bytes: &[u8]) -> BigUint {
+    BigUint::from_bytes_be(bytes)
 }
 
 // tests

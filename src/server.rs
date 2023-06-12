@@ -1,4 +1,6 @@
-use chaum_pederson_zkp::{random_number, random_string, verify, G, H, P};
+use chaum_pederson_zkp::{deserialize, random_number, random_string, serialize, verify, G, H, P};
+use num_bigint::BigUint;
+use num_traits::Zero;
 use std::collections::HashMap;
 use std::sync::Mutex;
 use tonic::{transport::Server, Code, Request, Response, Status};
@@ -15,11 +17,11 @@ use zkp_auth::{
 
 #[derive(Debug, Default)]
 pub struct UserInfo {
-    pub y1: u32,
-    pub y2: u32,
-    pub r1: u32,
-    pub r2: u32,
-    pub c: u32,
+    pub y1: BigUint,
+    pub y2: BigUint,
+    pub r1: BigUint,
+    pub r2: BigUint,
+    pub c: BigUint,
     pub session_id: String,
 }
 
@@ -41,11 +43,11 @@ impl Auth for AuthImpl {
         let user_id = request.user;
 
         let user_info = UserInfo {
-            y1: request.y1,
-            y2: request.y2,
-            r1: 0,
-            r2: 0,
-            c: 0,
+            y1: deserialize(&request.y1),
+            y2: deserialize(&request.y2),
+            r1: BigUint::zero(),
+            r2: BigUint::zero(),
+            c: BigUint::zero(),
             session_id: String::new(),
         };
 
@@ -68,19 +70,19 @@ impl Auth for AuthImpl {
 
         let user_info_hashmap = &mut self.user_info.lock().unwrap(); // TODO : improve
         if let Some(user_info) = user_info_hashmap.get_mut(&user_id) {
-            let auth_id = random_string(6); // TODO : generate auth_id
-            let c = random_number() % 10; // TODO : generate c
+            let auth_id = random_string(6);
+            let c = random_number();
 
-            user_info.r1 = request.r1;
-            user_info.r2 = request.r2;
-            user_info.c = c;
+            user_info.r1 = deserialize(&request.r1);
+            user_info.r2 = deserialize(&request.r2);
+            user_info.c = c.clone();
 
             let auth_info_hashmap = &mut self.auth_info.lock().unwrap(); // TODO : improve
             auth_info_hashmap.insert(auth_id.clone(), user_id.clone());
 
             Ok(Response::new(AuthenticationChallengeResponse {
                 auth_id,
-                c,
+                c: serialize(&c),
             }))
         } else {
             Err(Status::new(
@@ -104,14 +106,24 @@ impl Auth for AuthImpl {
         if let Some(user_id) = auth_info_hashmap.get(&auth_id) {
             if let Some(user_info) = user_info_hashmap.get_mut(user_id) {
                 // Verification Code
-                let r1 = user_info.r1;
-                let r2 = user_info.r2;
-                let c = user_info.c;
-                let y1 = user_info.y1;
-                let y2 = user_info.y2;
-                let s = request.s;
+                let r1 = &user_info.r1;
+                let r2 = &user_info.r2;
+                let c = &user_info.c;
+                let y1 = &user_info.y1;
+                let y2 = &user_info.y2;
+                let s = deserialize(&request.s);
 
-                if verify(P, y1, y2, r1, r2, G, H, c, s) {
+                if verify(
+                    &deserialize(P),
+                    y1,
+                    y2,
+                    r1,
+                    r2,
+                    &deserialize(G),
+                    &deserialize(H),
+                    c,
+                    &s,
+                ) {
                     let session_id = random_string(6);
                     user_info.session_id = session_id.clone();
 

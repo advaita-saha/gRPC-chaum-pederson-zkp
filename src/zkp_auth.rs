@@ -3,10 +3,10 @@
 pub struct RegisterRequest {
     #[prost(string, tag = "1")]
     pub user: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "2")]
-    pub y1: u32,
-    #[prost(uint32, tag = "3")]
-    pub y2: u32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub y1: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub y2: ::prost::alloc::vec::Vec<u8>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16,26 +16,26 @@ pub struct RegisterResponse {}
 pub struct AuthenticationChallengeRequest {
     #[prost(string, tag = "1")]
     pub user: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "2")]
-    pub r1: u32,
-    #[prost(uint32, tag = "3")]
-    pub r2: u32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub r1: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub r2: ::prost::alloc::vec::Vec<u8>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationChallengeResponse {
     #[prost(string, tag = "1")]
     pub auth_id: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "2")]
-    pub c: u32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub c: ::prost::alloc::vec::Vec<u8>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationAnswerRequest {
     #[prost(string, tag = "1")]
     pub auth_id: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "2")]
-    pub s: u32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub s: ::prost::alloc::vec::Vec<u8>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

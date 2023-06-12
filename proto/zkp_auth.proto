@@ -3,8 +3,8 @@ package zkp_auth;
 
 message RegisterRequest {
     string user = 1;
-    uint32 y1 = 2;
-    uint32 y2 = 3;
+    bytes y1 = 2;
+    bytes y2 = 3;
 }
 
 message RegisterResponse {
@@ -12,18 +12,18 @@ message RegisterResponse {
 
 message AuthenticationChallengeRequest {
     string user = 1;
-    uint32 r1 = 2;
-    uint32 r2 = 3;
+    bytes r1 = 2;
+    bytes r2 = 3;
 }
 
 message AuthenticationChallengeResponse {
     string auth_id = 1;
-    uint32 c = 2;
+    bytes c = 2;
 }
 
 message AuthenticationAnswerRequest {
     string auth_id = 1;
-    uint32 s = 2;
+    bytes s = 2;
 }
 
 message AuthenticationAnswerResponse {
